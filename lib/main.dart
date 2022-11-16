@@ -15,6 +15,7 @@ class AdomApp extends StatelessWidget {
       debugShowCheckedModeBanner: false, // delete debug banner
       // home:MainScreen(),
       home: SplashScreen(),
+
     );
   }
 }
