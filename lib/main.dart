@@ -16,6 +16,7 @@ class AdomApp extends StatelessWidget {
       // home:MainScreen(),
       home: SplashScreen(),
 
+
     );
   }
 }
