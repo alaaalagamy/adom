@@ -56,31 +56,34 @@ class _SkinsImageState extends State<SkinsImage> {
               // Amr change here, we will difference the images from videos
               initFinished
                   ? Container(
-                      margin: const EdgeInsets.fromLTRB(10, 30, 10, 30),
-                      padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
-                      child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(10, 30, 10, 30),
-                          child: const Align(
-                            alignment: Alignment.topCenter,
-                            child: Image(key: Key(WidgetKey.KEY_SPLASH_SPLASH_IMAGE), image: AssetImage('assets/images/logo_white.png')),
-                          ),
-                        ),
-                        videosListTitleWidget(),
-                        videosListWidget(),
-                        const SizedBox(height: 15),
-                        imagesListTitleWidget(),
-                        imagesListWidget(),
-                        bottomButtonsWidget()
-                      ]),
-                    )
-                  : SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+                child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    child: const Align(
+                      alignment: Alignment.topCenter,
+                      child: Image(key: Key(WidgetKey.KEY_SPLASH_SPLASH_IMAGE),
+                          width: 100,
+                          height: 100,
+                          image: AssetImage('assets/images/logo_white.png')),
                     ),
+                  ),
+                  videosListTitleWidget(),
+                  videosListWidget(),
+                  const SizedBox(height: 30),
+                  imagesListTitleWidget(),
+                  imagesListWidget(),
+                  const SizedBox(height: 30),
+                  bottomButtonsWidget()
+                ]),
+              )
+                  : SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
               loadingWidget()
             ],
           ),
@@ -166,19 +169,23 @@ class _SkinsImageState extends State<SkinsImage> {
 
   Widget videosListWidget() {
     return videosList.isNotEmpty
-        ? SizedBox(
-            height: 135,
-            child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: videosList.map((e) {
-                  String label = e.label;
-                  return Container(
-                    margin: const EdgeInsets.only(right: 15),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
+        ? Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+          height: 160,
+          child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: videosList.map((e) {
+                String label = e.label;
+                return Container(
+                  margin: const EdgeInsets.only(right: 15),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12 , horizontal: 0),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
@@ -199,74 +206,76 @@ class _SkinsImageState extends State<SkinsImage> {
                             editLabelIcon(e.id.toString(), false)
                           ],
                         ),
-                        GestureDetector(
-                          onDoubleTap: () async {
-                            Map<String, dynamic> map = {
-                              "playlist_type": "item",
-                              "is_horizontal": SharedValues.device!.d_category == 1 ? false : true,
-                              "device_id": SharedValues.device!.id,
-                              "playlist_items": [
-                                {"item": e.id, "duration": e.duration}
-                              ]
-                            };
-                            // send request
-                            bool res = await _client.uploadCarouselPlayList(data: map);
-                            if (res) {
-                              fToast.showToast(
-                                toastDuration: const Duration(milliseconds: 2000),
-                                child: SizedBox.fromSize(
-                                  size: const Size(40, 40), // button width and height
-                                  child: ClipOval(
-                                    child: Material(
-                                      color: Colors.green, // button color
-                                      child: InkWell(
-                                        splashColor: Colors.green, // splash color
-                                        onTap: () {},
-                                        child: const Icon(Icons.check , color: Colors.white,), // icon
-                                      ),
+                      ),
+                      GestureDetector(
+                        onDoubleTap: () async {
+                          Map<String, dynamic> map = {
+                            "playlist_type": "item",
+                            "is_horizontal": SharedValues.device!.d_category == 1 ? false : true,
+                            "device_id": SharedValues.device!.id,
+                            "playlist_items": [
+                              {"item": e.id, "duration": e.duration}
+                            ]
+                          };
+                          // send request
+                          bool res = await _client.uploadCarouselPlayList(data: map);
+                          if (res) {
+                            fToast.showToast(
+                              toastDuration: const Duration(milliseconds: 2000),
+                              child: SizedBox.fromSize(
+                                size: const Size(40, 40), // button width and height
+                                child: ClipOval(
+                                  child: Material(
+                                    color: Colors.green, // button color
+                                    child: InkWell(
+                                      splashColor: Colors.green, // splash color
+                                      onTap: () {},
+                                      child: const Icon(Icons.check , color: Colors.white,), // icon
                                     ),
                                   ),
                                 ),
-                                gravity: ToastGravity.TOP_RIGHT,
-                              );
-                              // if (!mounted) return;
-                              // Navigator.pop(context);
-                            } else {
-                              fToast.showToast(
-                                toastDuration: const Duration(milliseconds: 2000),
-                                child: SizedBox.fromSize(
-                                  size: const Size(40, 40), // button width and height
-                                  child: ClipOval(
-                                    child: Material(
-                                      color: Colors.green, // button color
-                                      child: InkWell(
-                                        splashColor: Colors.green, // splash color
-                                        onTap: () {},
-                                        child: const Icon(Icons.error , color: Colors.white,), // icon
-                                      ),
+                              ),
+                              gravity: ToastGravity.TOP_RIGHT,
+                            );
+                            // if (!mounted) return;
+                            // Navigator.pop(context);
+                          } else {
+                            fToast.showToast(
+                              toastDuration: const Duration(milliseconds: 2000),
+                              child: SizedBox.fromSize(
+                                size: const Size(40, 40), // button width and height
+                                child: ClipOval(
+                                  child: Material(
+                                    color: Colors.green, // button color
+                                    child: InkWell(
+                                      splashColor: Colors.green, // splash color
+                                      onTap: () {},
+                                      child: const Icon(Icons.error , color: Colors.white,), // icon
                                     ),
                                   ),
                                 ),
-                                gravity: ToastGravity.TOP_RIGHT,
-                              );
-                            }
+                              ),
+                              gravity: ToastGravity.TOP_RIGHT,
+                            );
+                          }
 
-                            // showCarosalDialog(
-                            //   e,
-                            //   isImage: false,
-                            // );
-                          },
-                          child: Image(
-                              width: MediaQuery.of(context).size.width / 2.3,
-                              height: 105,
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.high,
-                              image: NetworkImage(e.thumbPath)),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList()))
+                          // showCarosalDialog(
+                          //   e,
+                          //   isImage: false,
+                          // );
+                        },
+                        child: Image(
+                            width: MediaQuery.of(context).size.width / 2.3,
+                            height: 105,
+                            fit: BoxFit.cover,
+                            filterQuality: FilterQuality.high,
+                            image: NetworkImage(e.thumbPath)),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList())),
+    )
         : emptyListWidget(isImage: false);
   }
 
@@ -463,17 +472,20 @@ class _SkinsImageState extends State<SkinsImage> {
   }
 
   Widget imagesListTitleWidget() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-      child: Row(
-        children: [
-          Text(
-            'images'.toUpperCase(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 20, color: Colors.white, fontFamily: 'Poppins-Italic'),
-          ),
-          const Spacer(),
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+        child: Row(
+          children: [
+            Text(
+              'images'.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 20, color: Colors.white, fontFamily: 'Poppins-Italic'),
+            ),
+            const Spacer(),
+          ],
+        ),
       ),
     );
   }
@@ -639,7 +651,7 @@ class _SkinsImageState extends State<SkinsImage> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+              padding: const EdgeInsets.all(5.0),
               child: ElevatedButton(
                 style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
@@ -674,115 +686,119 @@ class _SkinsImageState extends State<SkinsImage> {
     // showing list of images
     return imgList.isNotEmpty
         ? SizedBox(
-            height: 135,
-            child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: imgList.map((e) {
-                  //     String label = 'Image ${imgList.indexOf(e) + 1}';
-                  String label = e.label;
-                  return Container(
-                    margin: const EdgeInsets.only(right: 15),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 130,
-                              child: Center(
-                                child: Text(
-                                  label,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(fontSize: 20, color: Colors.white, fontFamily: 'Poppins-Italic'),
+        height: 160,
+        child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: imgList.map((e) {
+              //     String label = 'Image ${imgList.indexOf(e) + 1}';
+              String label = e.label;
+              return Container(
+                margin: const EdgeInsets.only(right: 15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12 , horizontal: 0),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 130,
+                            child: Center(
+                              child: Text(
+                                label,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 20, color: Colors.white, fontFamily: 'Poppins-Italic'),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          editLabelIcon(e.id.toString(), true)
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onDoubleTap: () async {
+                        Map<String, dynamic> map = {
+                          "playlist_type": "item",
+                          "is_horizontal": SharedValues.device!.d_category == 1 ? false : true,
+                          "device_id": SharedValues.device!.id,
+                          "playlist_items": [
+                            {"item": e.id, "duration": 10}
+                          ]
+                        };
+                        // send request
+                        bool res = await _client.uploadCarouselPlayList(data: map);
+                        if (res) {
+                          fToast.showToast(
+                            toastDuration: const Duration(milliseconds: 2000),
+                            child: SizedBox.fromSize(
+                              size: const Size(40, 40), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Colors.green, // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {},
+                                    child: const Icon(Icons.check , color: Colors.white,), // icon
+                                  ),
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 5,
+                            gravity: ToastGravity.TOP_RIGHT,
+                          );
+                          // if (!mounted) return;
+                          // Navigator.pop(context);
+                        } else {
+                          fToast.showToast(
+                            toastDuration: const Duration(milliseconds: 2000),
+                            child: SizedBox.fromSize(
+                              size: const Size(40, 40), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Colors.green, // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {},
+                                    child: const Icon(Icons.error , color: Colors.white,), // icon
+                                  ),
+                                ),
+                              ),
                             ),
-                            editLabelIcon(e.id.toString(), true)
-                          ],
-                        ),
-                        GestureDetector(
-                          onDoubleTap: () async {
-                            Map<String, dynamic> map = {
-                              "playlist_type": "item",
-                              "is_horizontal": SharedValues.device!.d_category == 1 ? false : true,
-                              "device_id": SharedValues.device!.id,
-                              "playlist_items": [
-                                {"item": e.id, "duration": 10}
-                              ]
-                            };
-                            // send request
-                            bool res = await _client.uploadCarouselPlayList(data: map);
-                            if (res) {
-                              fToast.showToast(
-                                toastDuration: const Duration(milliseconds: 2000),
-                                child: SizedBox.fromSize(
-                                  size: const Size(40, 40), // button width and height
-                                  child: ClipOval(
-                                    child: Material(
-                                      color: Colors.green, // button color
-                                      child: InkWell(
-                                        splashColor: Colors.green, // splash color
-                                        onTap: () {},
-                                        child: const Icon(Icons.check , color: Colors.white,), // icon
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                gravity: ToastGravity.TOP_RIGHT,
-                              );
-                              // if (!mounted) return;
-                              // Navigator.pop(context);
-                            } else {
-                              fToast.showToast(
-                                toastDuration: const Duration(milliseconds: 2000),
-                                child: SizedBox.fromSize(
-                                  size: const Size(40, 40), // button width and height
-                                  child: ClipOval(
-                                    child: Material(
-                                      color: Colors.green, // button color
-                                      child: InkWell(
-                                        splashColor: Colors.green, // splash color
-                                        onTap: () {},
-                                        child: const Icon(Icons.error , color: Colors.white,), // icon
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                gravity: ToastGravity.TOP_RIGHT,
-                              );
-                            }
+                            gravity: ToastGravity.TOP_RIGHT,
+                          );
+                        }
 
-                            // showCarosalDialog(
-                            //   e,
-                            //   isImage: false,
-                            // );
-                          },
-                          child: Image(
-                              width: MediaQuery.of(context).size.width / 2.3,
-                              height: 105,
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.high,
-                              image: NetworkImage(e.imagePath),
-                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              }),
-                        ),
-                      ],
+                        // showCarosalDialog(
+                        //   e,
+                        //   isImage: false,
+                        // );
+                      },
+                      child: Image(
+                          width: MediaQuery.of(context).size.width / 2.3,
+                          height: 105,
+                          fit: BoxFit.cover,
+                          filterQuality: FilterQuality.high,
+                          image: NetworkImage(e.imagePath),
+                          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          }),
                     ),
-                  );
-                }).toList()))
+                  ],
+                ),
+              );
+            }).toList()))
         : emptyListWidget(isImage: true);
   }
 }
+

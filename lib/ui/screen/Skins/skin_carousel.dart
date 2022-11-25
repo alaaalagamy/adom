@@ -35,21 +35,24 @@ class _SkinCarouselState extends State<SkinCarousel> {
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.fromLTRB(10, 30, 10, 30),
-          padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+          padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
           child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
             Container(
-              margin: const EdgeInsets.fromLTRB(10, 30, 10, 30),
+              margin: const EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: const Align(
                 alignment: Alignment.topCenter,
-                child: Image(key: Key(WidgetKey.KEY_SPLASH_SPLASH_IMAGE), image: AssetImage('assets/images/logo_white.png')),
+                child: Image(key: Key(WidgetKey.KEY_SPLASH_SPLASH_IMAGE),
+                    width: 100,
+                    height: 100,
+                    image: AssetImage('assets/images/logo_white.png')),
               ),
             ),
             videosListTitleWidget(),
             videosListWidget(),
-            const SizedBox(height: 5),
+            const SizedBox(height: 30),
             imagesListTitleWidget(),
             imagesListWidget(),
+            const SizedBox(height: 30),
             bottomButtonsWidget()
           ]),
         ),
@@ -76,53 +79,76 @@ class _SkinCarouselState extends State<SkinCarousel> {
   Widget videosListWidget() {
     return widget.videoList.isNotEmpty
         ? SizedBox(
-            height: 135,
+            height: 160,
             child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: widget.videoList.map((e) {
                   List<CarouselObject> tempList = carouselObjects.where((element) => element.id == e.id).toList();
-                  return GestureDetector(
-                    onTap: () {
-                      if (carouselObjects.length < 10) {
-                        if (carouselObjects.where((element) => element.id == e.id).toList().isEmpty) {
-                          carouselObjects.add(CarouselObject(e.duration, e.id));
-                          setState(() {});
-                        }
-                      }
-                    },
-                    child: Stack(
-                      children: [
-                        Container(
-                            height: 105,
-                            width: MediaQuery.of(context).size.width / 2.3,
-                            margin: const EdgeInsets.only(right: 15),
-                            child: Image(width: 100, fit: BoxFit.cover, filterQuality: FilterQuality.high, image: NetworkImage(e.thumbPath))),
-                        Visibility(
-                          visible: tempList.isNotEmpty,
-                          child: Container(
-                            height: 100,
-                            width: MediaQuery.of(context).size.width / 2.3,
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.blue,
-                                radius: 10,
-                                child: Text(
-                                  '${carouselObjects.indexWhere((element) => element.id == e.id) + 1}',
-                                  style: const TextStyle(color: Colors.white),
+                  return Column(
+                    children: [
+                      Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12 , horizontal: 0),
+                        child: label(e.label),
+                  ),
+
+                      GestureDetector(
+                        onTap: () {
+                          if (carouselObjects.length < 10) {
+                            if (carouselObjects.where((element) => element.id == e.id).toList().isEmpty) {
+                              carouselObjects.add(CarouselObject(e.duration, e.id));
+                              setState(() {});
+                            }
+                          }
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                                height: 105,
+                                width: MediaQuery.of(context).size.width / 2.3,
+                                margin: const EdgeInsets.only(right: 15),
+                                child: Image(width: 100, fit: BoxFit.cover, filterQuality: FilterQuality.high, image: NetworkImage(e.thumbPath))),
+                            Visibility(
+                              visible: tempList.isNotEmpty,
+                              child: Container(
+                                height: 100,
+                                width: MediaQuery.of(context).size.width / 2.3,
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.blue,
+                                    radius: 10,
+                                    child: Text(
+                                      '${carouselObjects.indexWhere((element) => element.id == e.id) + 1}',
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   );
                 }).toList()))
         : emptyListWidget(isImage: false);
   }
 
+  label(String label) {
+    return SizedBox(
+      width: 130,
+      child: Center(
+        child: Text(
+          label,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          style: const TextStyle(fontSize: 20, color: Colors.white, fontFamily: 'Poppins-Italic'),
+        ),
+      ),
+    );
+  }
   Widget emptyListWidget({required bool isImage}) {
     return SizedBox(
       height: 100,
@@ -255,7 +281,7 @@ class _SkinCarouselState extends State<SkinCarousel> {
     // showing list of images
     return widget.imgList.isNotEmpty
         ? SizedBox(
-            height: 135,
+            height: 160,
             child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: widget.imgList.map((e) {
@@ -263,35 +289,43 @@ class _SkinCarouselState extends State<SkinCarousel> {
 
                   return Stack(
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          if (carouselObjects.length < 10) {
-                            // avoid duplicate
-                            if (carouselObjects.where((element) => element.id == e.id).toList().isEmpty) {
-                              carouselObjects.add(CarouselObject(10, e.id));
-                              setState(() {});
-                            }
-                          }
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 15),
-                          child: Image(
-                              height: 105,
-                              width: MediaQuery.of(context).size.width / 2.3,
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.high,
-                              image: NetworkImage(e.imagePath),
-                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              }),
-                        ),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12 , horizontal: 0),
+                            child: label(e.label),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (carouselObjects.length < 10) {
+                                // avoid duplicate
+                                if (carouselObjects.where((element) => element.id == e.id).toList().isEmpty) {
+                                  carouselObjects.add(CarouselObject(10, e.id));
+                                  setState(() {});
+                                }
+                              }
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 15),
+                              child: Image(
+                                  height: 105,
+                                  width: MediaQuery.of(context).size.width / 2.3,
+                                  fit: BoxFit.cover,
+                                  filterQuality: FilterQuality.high,
+                                  image: NetworkImage(e.imagePath),
+                                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress.expectedTotalBytes != null
+                                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ),
+                        ],
                       ),
                       Visibility(
                         visible: tempList.isNotEmpty,

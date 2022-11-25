@@ -1,14 +1,5 @@
-import 'package:adom/ui/screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-
-import 'Skins/skins_color.dart';
-import 'Skins/skins_image.dart';
-import 'Skins/skins_video.dart';
-import 'commons/header_widget.dart';
-import 'commons/theme_helper.dart';
-import 'commons/widget_keys.dart';
 
 class HomeWidget extends StatefulWidget {
 

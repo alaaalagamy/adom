@@ -35,15 +35,16 @@ class _SkinsColorState extends State<SkinsColor> {
         backgroundColor: Colors.black,
         body: SingleChildScrollView(
           child: Container(
-            margin: const EdgeInsets.fromLTRB(10, 30, 10, 30),
-            padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
+            padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
             child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
               Container(
-                margin: const EdgeInsets.fromLTRB(10, 30, 10, 30),
+                padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
                 child: const Align(
                   alignment: Alignment.topCenter,
                   child: Image(
                       key: Key(WidgetKey.KEY_SPLASH_SPLASH_IMAGE),
+                      width: 100,
+                      height: 100,
                       image: AssetImage('assets/images/logo_white.png')),
                 ),
               ),

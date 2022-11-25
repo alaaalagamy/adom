@@ -108,7 +108,7 @@ class _SkinsShoesState extends State<SkinsShoes> {
                                             );
                                           },
                                           child: const ImageIcon(
-                                            AssetImage('assets/images/images.png'),
+                                            AssetImage('assets/images/images2.png'),
                                             color: Colors.black,
                                           ), // icon
                                         ),
